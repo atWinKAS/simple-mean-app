@@ -18,6 +18,14 @@ angular.module('storyService', [])
             return $http.get('/api/all_stories');
         }
         
+        storyFactory.getDetails = function(id) {
+            return $http.get('/api/details/' + id);
+        }
+        
+        storyFactory.delete = function(storyId) {
+            return $http.delete('/api/delete/' + storyId);
+        }
+        
         return storyFactory;
     })
     

@@ -28,7 +28,16 @@ angular.module('storyCtrl', ['storyService'])
             vm.stories.push(data);
         });
         
-        
+        socketio.on('deleted', function(data) {
+            if (vm.stories != null && vm.stories != undefined) {
+                for(var i=0; i < vm.stories.length; i++) {
+                    if (vm.stories[i]._id === data) {
+                        vm.stories.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        });
         
     })
     
@@ -39,5 +48,28 @@ angular.module('storyCtrl', ['storyService'])
         
         socketio.on('story', function(data) {
             vm.stories.push(data);
-        })
+        });
+        
+        socketio.on('deleted', function(data) {
+            if (vm.stories != null && vm.stories != undefined) {
+                for(var i=0; i < vm.stories.length; i++) {
+                    if (vm.stories[i]._id === data) {
+                        vm.stories.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        });
+    })
+    
+    .controller('StoryDetailsController', function(Story, currentStory, $location) {
+        var vm = this;
+        vm.story = currentStory.data;
+        
+        vm.deleteStory = function(){
+            Story.delete(vm.story._id)
+                .then(function(data){
+                    $location.path('/');
+                })
+        }
     })

@@ -38,6 +38,7 @@
                 
                 <div class="panel-body" ng-repeat="item in story.stories | reverse">
                     <p> {{ item.content }} </p>
+                    <a href="/details/{{item._id}}">Details</a>
                 </div>
             </div>
             

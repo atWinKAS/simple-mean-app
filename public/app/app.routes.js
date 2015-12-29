@@ -13,14 +13,25 @@ angular.module('appRoutes', ['ngRoute'])
 		})
 		.when('/signup', {
 			templateUrl: 'app/views/pages/signup.html'
-		}).
-        when('/allstories', {
+		})
+        .when('/allstories', {
             templateUrl: 'app/views/pages/allStories.html',
             controller: 'AllStoriesController',
             controllerAs: 'story',
             resolve: {
                 stories: function(Story) {
                     return Story.allStories();
+                } 
+            }
+        })
+        .when('/details/:id', {
+            templateUrl: 'app/views/pages/details.html',
+            controller: 'StoryDetailsController',
+            controllerAs: 'details',
+            resolve: {
+                currentStory: function(Story, $route) {
+                    var id = $route.current.params.id;
+                    return Story.getDetails(id);
                 } 
             }
         })

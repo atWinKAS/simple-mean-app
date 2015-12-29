@@ -29,6 +29,17 @@ module.exports = function(app, express, io) {
         })
     });
     
+    api.get('/details/:id', function(req, res) {
+        var id = req.params.id;
+        Story.findOne({ _id: id }, function(err, story) {
+            if (err) {
+                res.send(err);
+                return;
+            }
+            res.json(story);
+        })
+    });
+    
 	api.post('/signup', function(req, res) {
 		var user = new User({
 			name: req.body.name,
@@ -137,8 +148,18 @@ module.exports = function(app, express, io) {
 				
 				res.json(stories);
 			});
-		}); 
-	
+		});
+          
+    api.delete('/delete/:id', function(req, res) {
+        Story.remove({ _id: req.params.id }, function (err) {
+                 if (err) 
+                     return res.send(err);
+                     
+                 io.emit('deleted', req.params.id);    
+                 res.json({ message: 'Deleted' });
+             });
+    });      
+           
 	api.get('/me', function(req, res) {
 		res.json(req.decoded);
 	});
